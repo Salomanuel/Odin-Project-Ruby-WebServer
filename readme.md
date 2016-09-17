@@ -1,3 +1,5 @@
+http://www.theodinproject.com/ruby-programming/ruby-on-the-web
+
 # Projects: Ruby on the Web
 
 Don't forget to use Git to save your projects!   
@@ -72,7 +74,7 @@ Read this brief tutorial on Ruby socket programming from TutorialsPoint. Don't w
 
 In one file, implement their "A Simple Server". It's easy to copy/paste code, but make sure you conceptually understand what each line is doing.
 Ready to get your mind blown? When you call TCPServer.open, the ::open class method is the EXACT same method that you use to call File.open because TCPServer inherits (several levels up) from the same IO class that File does! Another way working with servers is like working with files.
-#accept is just an instance method of the TCPServer class. It waits around for a connection, and when it gets a connection, it returns the TCPSocket representing that connection (see the docs).
+accept is just an instance method of the TCPServer class. It waits around for a connection, and when it gets a connection, it returns the TCPSocket representing that connection (see the docs).
 Now when you #puts to that socket, it gets picked up on the other side by your client. Not magic at all, just a stream of bytes like typing into the STDIN from the command line using #gets or to STDOUT using #puts.
 
 In another file, implement their "A Simple Client". This should really look a lot like working with files. localhost just represents the address of your current computer (as opposed to, say http://www.google.com). Whenever you're building web applications and need to test them locally before deploying, you'll run a local server whose address will be localhost and some port number (often 3000, but that's arbitrary). So get familiar with it!
