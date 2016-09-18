@@ -1,8 +1,8 @@
 require 'socket'
 
-host = 'www.example.com'
+host = 'localhost'
 port = 80
-path = '/home.html'
+path = '/index.html'
 
 request = "GET #{path} HTTP/1.0\r\n\r\n"
 
