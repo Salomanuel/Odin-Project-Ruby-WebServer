@@ -26,10 +26,16 @@ loop do
 	STDERR.puts request_line
 
 	if request_line[0] == "GET" and request_line[1] == "/index.html"
-
+		message = File.read(request_line[1])
+		socket.print 	"HTTP/1.1 200 OK\r\n" +
+									#"Content-Type: #{content_type(message)}\r\n"
+									#"Content-Lenght: #{message.size}\r\n" +
+									"Connection: close\r\n"
+			socket.print "\r\n"
+		socket.print 	message
 	else
-		message 		 = "la borra"
 		socket.print 	request_line
+		socket.print 	"\nthis is #{request_line[1]}"
 	end
 
 	socket.close
