@@ -1,10 +1,11 @@
 require 'socket'
+require 'json'
 
 @host = 'localhost'
 port = 2345
 @path = '/'
 
-def pages_options
+def interface
 	puts "what's page you want to reach in #{@host}'s domain?"
 	puts "1 for index.html, 2 for thanks.html, 3 for custom"
 	case gets.chomp
@@ -25,15 +26,28 @@ def pages_options
 end
 
 def post
-
+	params = {:viking => {name: "", email:""}}
+	puts "viking's name?"
+	params[:viking][:name]  = gets.chomp
+	puts "viking's email?"
+	params[:viking][:email] = gets.chomp
+	@headers =  "Content-Lenght:#{@additional_data.size}\r\n"
+	@additional_data = params.to_json
 end
 
-pages_options
-#post if @get_or_post == "POST"
-request = "#{@get_or_post} #{@path} HTTP/1.0\r\n\r\n"
+interface
 
-socket  = TCPSocket.open(@host,port)
-socket.print(request)
+request          = "#{@get_or_post} #{@path} HTTP/1.0\r\n\r\n"
+@headers         = ""
+@additional_data = ""
+
+post if @get_or_post == "POST"
+
+socket  = TCPSocket.open(@host,port)					#connect to server
+socket.print(request)													#send request's first line
+socket.print(@headers)												#send headers
+socket.print(@additional_data)								#send hash
 response = socket.read
 headers, body = response.split("\r\n\r\n", 2)
 puts body
+socket.close																	#close the connection
