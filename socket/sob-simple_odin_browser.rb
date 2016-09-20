@@ -31,22 +31,24 @@ def post
 	params[:viking][:name]  = gets.chomp
 	puts "viking's email?"
 	params[:viking][:email] = gets.chomp
-	@headers =  "Content-Lenght:#{@additional_data.size}\r\n"
 	@additional_data = params.to_json
+	@headers =  "Content-Lenght:#{@additional_data.size}\r\n\r\n"
 end
 
 interface
 
-request          = "#{@get_or_post} #{@path} HTTP/1.0\r\n\r\n"
+@first_line      = "#{@get_or_post} #{@path} HTTP/1.0\r\n\r\n"
 @headers         = ""
 @additional_data = ""
 
 post if @get_or_post == "POST"
 
+request = "#{@first_line}#{@headers}#{@additional_data}"
+
 socket  = TCPSocket.open(@host,port)					#connect to server
 socket.print(request)													#send request's first line
-socket.print(@headers)												#send headers
-socket.print(@additional_data)								#send hash
+puts request
+
 response = socket.read
 headers, body = response.split("\r\n\r\n", 2)
 puts body
