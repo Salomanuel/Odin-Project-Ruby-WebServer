@@ -3,18 +3,25 @@ require 'json'
 
 server = TCPServer.new('localhost', 2345)
 
-
 loop do
 	socket     = server.accept
-	#request   = socket.gets.split(" ")
-	request    = socket.gets.split("\r\n\r\n",2)
-	first_line = request[0].split(" ")
+	request    = socket.read_nonblock(256)
+	
+	first_line = request.split("\r\n")[0].split(" ")
 	file       = first_line[1][1..-1]				#filename without "/"
 
-	STDERR.puts request.join
+	STDERR.puts "*** this is server ***"							+
+			 				"request:\n#{request}\n"							+
+							"first line:\n#{first_line}\n"	+
+							"file: #{file}\n"											+
+							"file exists? #{File.exist?(file)}\n"	+
+							"*** server is done***"
+
+
+	#STDERR.puts "server request: #{request}"
 
 	if File.exist?(file) 
-		page = File.read(file)		
+		page = File.read(file)	
 		socket.print "HTTP/1.1 200 OK\r\n" 											 		+
 								 "Content-Type: 	text/html\r\n" 				 			+
 								 "Content-Lenght: #{page.bytesize}\r\n"+

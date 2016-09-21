@@ -6,7 +6,7 @@ port = 2345
 @path = '/'
 
 def interface
-	puts "what's page you want to reach in #{@host}'s domain?"
+	puts "what page you want to reach in #{@host}'s domain?"
 	puts "1 for index.html, 2 for thanks.html, 3 for custom"
 	case gets.chomp
 	when "1" then @path << "index.html"
@@ -32,24 +32,24 @@ def post
 	puts "viking's email?"
 	params[:viking][:email] = gets.chomp
 	@additional_data = params.to_json
-	@headers =  "Content-Lenght:#{@additional_data.size}\r\n\r\n"
+	@headers =  "Content-Lenght:#{@additional_data.size}"
 end
 
 interface
 
-@first_line      = "#{@get_or_post} #{@path} HTTP/1.0\r\n\r\n"
+@first_line      = "#{@get_or_post} #{@path} HTTP/1.0"
 @headers         = ""
 @additional_data = ""
 
 post if @get_or_post == "POST"
 
-request = "#{@first_line}#{@headers}#{@additional_data}"
+request = "#{@first_line}\r\n#{@headers}\r\n#{@additional_data}\r\n\r\n"
 
 socket  = TCPSocket.open(@host,port)					#connect to server
 socket.print(request)													#send request's first line
-puts request
+puts "---browser sent:\n#{request}\nend of request---\n"
 
 response = socket.read
 headers, body = response.split("\r\n\r\n", 2)
-puts body
+puts "browser received:\n#{body}"
 socket.close																	#close the connection
