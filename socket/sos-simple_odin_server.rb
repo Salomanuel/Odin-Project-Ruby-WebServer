@@ -5,20 +5,23 @@ server = TCPServer.new('localhost', 2345)
 
 loop do
 	socket     = server.accept
-	request    = socket.read_nonblock(256)
 	
-	first_line = request.split("\r\n")[0].split(" ")
+	begin
+   request    = socket.read_nonblock(256).split("\r\n")
+	rescue IO::WaitReadable
+   IO.select([socket])
+   retry
+	end
+	
+	first_line = request[0].split(" ")
 	file       = first_line[1][1..-1]				#filename without "/"
 
-	STDERR.puts "*** this is server ***"							+
+	STDERR.puts "*** this is server diagnostics ***"							+
 			 				"request:\n#{request}\n"							+
 							"first line:\n#{first_line}\n"	+
 							"file: #{file}\n"											+
 							"file exists? #{File.exist?(file)}\n"	+
-							"*** server is done***"
-
-
-	#STDERR.puts "server request: #{request}"
+							"*** server diagnostics finished ***"
 
 	if File.exist?(file) 
 		page = File.read(file)	
@@ -30,8 +33,13 @@ loop do
 		if 		first_line[0] == "GET"
 			socket.print page
 		elsif first_line[0] == "POST"
-			socket.print "server says: that's the request:\n#{request}"
+			#socket.print "server says: that's the request:\n#{request}"
 			#socket.print page
+			params = JSON.parse(request[2])
+			li_s = ''
+			params["viking"].each { |key, value| li_s += "<li>#{key.capitalize}: #{value}</li>" }
+			socket.puts "#{File.open(file).read.gsub("<%= yield %>", li_s)}"
+			#socket.print "viking's data: #{params}"
 		end
 	else
 		not_found  = "page not found, type better"								
