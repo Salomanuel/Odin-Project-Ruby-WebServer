@@ -1,3 +1,4 @@
+it has been removed!
 # [Projects: Ruby on the Web](http://www.theodinproject.com/ruby-programming/ruby-on-the-web)
 
 ## Project 1: Twitter Spambot
@@ -19,7 +20,7 @@ Don't worry about the last part on Klout.
 Part of the reason for getting into how Ruby interacts with the web is because it's directly relevant to what you'll be doing later on with Rails. Rails is just Ruby code neatly packaged and highly opinionated. Anything Rails does, you can reproduce on your own (given the time) with some Ruby knowledge.
 In this case, you'll be building a simple web server that receives requests and sends a response based on those requests. You'll also create a simple browser client to issue those requests -- then they can talk to each other! After this project, the web should feel a lot less magical and mysterious for you, just full of interesting challenges.
 There are a lot of steps here, and you'll need to draw on some of your previous knowledge of working with files and possibly using some basic regular expressions to parse a string.
-###Background Reading
+### Background Reading
 From the Ruby 1.9.x Web Servers Booklet:
 
 Web Server Primer
@@ -64,7 +65,7 @@ Send your request to start reading the file (or whatever you want from that serv
 Read the contents of the file (or read the response from the server)
 Close the file (or the socket connection to the server)
 Cool!  
-###Your Task
+### Your Task
 
 1. In one file, implement their "A Simple Server". It's easy to copy/paste code, but make sure you conceptually understand what each line is doing.
     1. Ready to get your mind blown? When you call `TCPServer.open`, the `::open` class method is the EXACT same method that you use to call `File.open` because `TCPServer` inherits (several levels up) from the same `IO` class that `File` does! Another way working with servers is like working with files.
